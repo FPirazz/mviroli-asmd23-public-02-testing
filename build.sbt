@@ -4,5 +4,5 @@ lazy val root = (project in file("."))
     name := "asmd23-02-testing",
       libraryDependencies ++= Seq(
           "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % Test,
-          "org.mockito" % "mockito-core" % "3.+" % Test)
+          "org.mockito" % "mockito-core" % "5.16.1" % Test)
 )

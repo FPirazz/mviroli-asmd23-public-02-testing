@@ -193,3 +193,61 @@ public class RevisedAfterTwoFailingTest extends RevisedDevicesBlueprintTest {
 ```
 And the other tests in the same package. By using that blueprint class we can see that the development of individual
 Devices and Failing Policies became quite easy, manageable and clean to develop and read.
+
+## Task 3: REENGINEER
+Take an existing implemented small app with GUI, e.g. an OOP exam. Add a requirement that it outputs to console some 
+relevant messages, through a log class. Now you have an App with at least 3 classes (GUI, Model, Log). How would you 
+write integration tests for it? Search here: https://bitbucket.org/mviroli/oop2023-esami (2023, 2022,. . . )
+
+### Work Done:
+
+I've chosen the first exam project from the given link, so that is exercise a01a, contained in the package a01a.sol2, with
+[this file](src/main/java/a01a/sol2/Test.java) being the test class.
+
+I started by implement a basic Log class that makes use of the Logger library that Java has integrated, like this:
+```
+public class Log {
+    private static Logger LOGGER;
+
+    public static void setLOGGER(Logger LOGGERNEW) {
+        LOGGER = LOGGERNEW;
+    }
+    
+    public static Logger getLOGGER() {
+        return LOGGER;
+    }
+}
+```
+
+Implemented in a few locations inside the [LogicImpl](src/main/java/a01a/sol2/LogicImpl.java) class to basically do
+informative prints of what's going on in response to the GUI being interacted with.
+
+When it comes to how I wrote integration tests for the application, I wrote tests for the application in its entirety:
+for the Logic, GUI and Log, via the tests I wrote inside the a01a.sol2 package in the test directory.
+
+First of all, I tested the Logic (and Log) classes of the application, by writing Unit tests to try and test all the
+functionalities that the application needs to serve to the User, and try to have the most coverage possible.
+
+This can be seen in the [LogicTest](src/test/java/a01a/sol2/LogicTest.java) class, where I tested every function of the
+app, and had an almost 100% coverage of the Logic class and a 100% one of the Log class. Unfortunately, this line of code:
+```
+@Override
+public boolean isOver() {
+    if(this.marks.stream().anyMatch(p -> p.x() == this.size || p.y() == -1)) Log.getLOGGER().log(Level.INFO, "Application is over");
+    return this.marks.stream().anyMatch(p -> p.x() == this.size || p.y() == -1); <=====
+}
+```
+The coverage will never be 100% for every branch, because either:
+* Both clauses are false;
+* The first one is false and the second is true;
+But if the first one is true, then the second will never be considered, therefore there will never be 100% coverage.
+
+I have also written tests for the GUI, trying to also satisfy what is asked of the 4th task. The tests again can be
+seen in the [GUITest](src/test/java/a01a/sol2/GUITest.java) class, unfortunately though I *had* to modify the GUI class
+to include methods to perform tests, mainly to expose different components to be interacted with.
+
+I used a Spy object from Mockito to keep track of the calls done to the Logic object, making sure that the "clicks" on
+the button were done correctly following the instructions. Before the final version of GUITest, I also tried a Mock
+of the Logic, which was definitively usable and doable, but I preferred to use the Spy considering the small amount of 
+business logic.
+

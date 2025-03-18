@@ -1,0 +1,136 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Test</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">a01a.sol2</a>
+</div>
+
+<h1>Coverage Summary for Class: Test (a01a.sol2)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Test</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package a01a.sol2;
+&nbsp;
+<b class="nc">&nbsp;public class Test {</b>
+&nbsp;
+&nbsp;	 /*
+&nbsp;     * Scopo di questo esercizio è realizzare una GUI con l&#39;aspetto mostrato nell&#39;immagine fig1.png, fornita, 
+&nbsp;     * che realizza la possibilità di selezionare un insieme di celle non contigue, per poi farle traslare
+&nbsp;     * tutte insieme in alto-destra:
+&nbsp;     * 1 - l&#39;utente clicka su una cella qualunque della griglia, e questa si numera incrementalmente
+&nbsp;     * 2 - può continuare a selezionare più celle, a patto che non ne selezioni una adiacente a una già numerata (fig 1)
+&nbsp;     * 3 - alla prima pressione su una cella *adiacente a una numerata* (orizzontale/verticale/diagonale), allora tutte le celle numerate si spostano in alto-destra di una posizione (fig 2)
+&nbsp;     * 4 - ad ogni altra successiva pressione di qualunque cella, tutte le celle numerate si spostano ulteriormente in alto-destra di una posizione (fig 3)
+&nbsp;     * 5 - non appena una pressione causerebbe l&#39;uscita dalla griglia di una cella numerata (fig 3), a quel punto l&#39;applicazione si chiuda
+&nbsp;     * 
+&nbsp;     * Sono considerati opzionali ai fini della possibilità di correggere l&#39;esercizio, ma concorrono comunque 
+&nbsp;     * al raggiungimento della totalità del punteggio:
+&nbsp;     * - scorporamento via delegazione di tutti gli aspetti che non sono di view in una interfaccia+classe esterna
+&nbsp;     * - gestione della fine del gioco
+&nbsp;     *  
+&nbsp;     * La classe GUI fornita, da modificare, include codice che potrebbe essere utile per la soluzione.
+&nbsp;     * 
+&nbsp;     * Indicazioni di punteggio:
+&nbsp;	 * - correttezza della parte obbligatoria: 10 punti
+&nbsp;	 * - qualità della parte opzionale: 5 punti
+&nbsp;	 * - correttezza della parte opzionale: 2 punti
+&nbsp;     */
+&nbsp;
+&nbsp;
+&nbsp;    public static void main(String[] args) throws java.io.IOException {
+<b class="nc">&nbsp;        new GUI(10); </b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-18 18:10</div>
+</div>
+</body>
+</html>

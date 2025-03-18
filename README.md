@@ -251,3 +251,33 @@ the button were done correctly following the instructions. Before the final vers
 of the Logic, which was definitively usable and doable, but I preferred to use the Spy considering the small amount of 
 business logic.
 
+## Task 4: GUI-TESTER
+Generally, GUIs are a problem with testing. How do we test them? How do we automatise as most as possible testing of an 
+app with a GUI? Play with a simple example and derive some useful consideration.
+
+### Work Done:
+
+Testing the GUI was definitely trickier than the business logic, especially considering that, in this case, I had to
+expose some private attributes and behaviour of the class to the external environment, it is to be considered though
+that I could've also implemented a separate class to inherit from the GUI one, and used that as a testing ground, instead
+of the real thing.
+
+I didn't really have any problems using the mock objects offered by Mockito to build the tests, the most "difficult" was
+more to build code that would actually act as user interaction, so for example this newly part developed in the GUI class:
+```
+// New method to handle button clicks
+public void handleButtonClick(JButton button) {
+    Position position = this.cells.get(button);
+    this.logic.hit(position);
+
+    for (var entry : this.cells.entrySet()) {
+        entry.getKey().setText(
+                this.logic
+                        .getMark(entry.getValue())
+                        .map(String::valueOf)
+                        .orElse(" "));
+    }
+}
+```
+Otherwise every other aspect was not really different from testing any type of object that had a dependency, but once
+again thanks to TD entity that was easily testable.

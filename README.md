@@ -194,6 +194,100 @@ public class RevisedAfterTwoFailingTest extends RevisedDevicesBlueprintTest {
 And the other tests in the same package. By using that blueprint class we can see that the development of individual
 Devices and Failing Policies became quite easy, manageable and clean to develop and read.
 
+## Task 2: TOOLING
+Experiment with installing/using Mockito with Scala and/or in VSCode. Is VSCode better at all here? What’s the state of 
+mocking technologies for Scala?
+
+### Work Done:
+
+I used the original Device example from the repo as an example to convert the code from firstly Java to Scala, as seen
+in the following code snippets from the [FailingPolicyScala](src/main/java/scalaDevices/FailingPolicyScala.scala) class:
+```
+trait FailingPolicyScala {
+  def attemptOn(): Boolean
+  def reset(): Unit
+  def policyName(): String
+}
+
+object FailingPolicyScala {
+  private class RandomFailingScalaImpl extends FailingPolicyScala {
+    private val random = new Random()
+    private var failed = false
+
+    override def attemptOn(): Boolean = {
+      failed = failed || random.nextBoolean()
+      !failed
+    }
+
+    override def reset(): Unit = {
+      failed = false
+    }
+
+    override def policyName(): String = "random"
+  }
+  def apply(): FailingPolicyScala = new RandomFailingScalaImpl
+}
+```
+
+The [DeviceScala](src/main/java/scalaDevices/DeviceScala.scala) class:
+```
+trait DeviceScala {
+  @throws(classOf[IllegalStateException])
+  def on(): Unit
+  def off(): Unit
+  def isOn(): Boolean
+  def reset(): Unit
+}
+```
+And the [StandardDeviceScala](src/main/java/scalaDevices/StandardDeviceScala.scala) one:
+```
+class StandardDeviceScala(failingPolicy: FailingPolicyScala) extends DeviceScala {
+  private var deviceOn: Boolean = false
+
+  require(Option(failingPolicy).isDefined, "failingPolicy cannot be null")
+
+  override def on(): Unit = {
+    if (!failingPolicy.attemptOn()) {
+      throw new IllegalStateException()
+    }
+    this.deviceOn = true
+  }
+
+  override def off(): Unit = {
+    this.deviceOn = false
+  }
+
+  override def isOn: Boolean = this.deviceOn
+
+  override def reset(): Unit = {
+    this.off()
+    failingPolicy.reset()
+  }
+
+  override def toString: String = {
+    s"StandardDevice{policy=${failingPolicy.policyName()}, on=$deviceOn}"
+  }
+}
+```
+The Scala files worked quite well with Mockito, as we can see from the executable test class 
+[AlternateStandardDeviceScalaTest](src/test/java/scalaTests/AlternateStandardDeviceScalaTest.scala), which when run,
+perfectly executes with no problem. I also did find online a specific Mockito library for Scala, or rather, a library
+that compiles Mockito in respect to the latest Scala version to make sure that there aren't any problems with the
+library and the language, since Mockito is built mainly for Java.
+
+When it comes to VSCode instead, from an "operative" standpoint, it really is not more useful than IntelliJ, I actually
+think it's more of a hindrance, since, for IntelliJ, you just have to add one line correctly to your build tool of choice
+(obviously here we used SBT), and that's really it. Meanwhile for VSCode, we need to go through a multi-steps process
+which involves:
+* Metals, which is a Scala plugin for VSCode;
+* Change the settings in SBT instead of Bloop (Bloop is related to Metals);
+* Then, VSCode doesn't *actually* immediately recognizes Java files from a bare bone installation, so we need more plugins
+to recognize the language with the intelli-sense, through plugins like "Extension Pack for Java";
+* And then, once again, we need to go to the "**settings.json**" file inside the "**.vscode**" folder to define the
+JDK we want to use.
+
+So all in all, it really is not very worth it to use VSCode, if obviously tools like IntelliJ are available.
+
 ## Task 3: REENGINEER
 Take an existing implemented small app with GUI, e.g. an OOP exam. Add a requirement that it outputs to console some 
 relevant messages, through a log class. Now you have an App with at least 3 classes (GUI, Model, Log). How would you 

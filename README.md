@@ -375,3 +375,101 @@ public void handleButtonClick(JButton button) {
 ```
 Otherwise every other aspect was not really different from testing any type of object that had a dependency, but once
 again thanks to TD entity that was easily testable.
+
+## Task 5: TESTING-LLM
+
+LLMs/ChatGPT can arguably help in write/improve/complete/implement/reverse-engineer a JUnit test, either unit or 
+integration test. Experiment with this, based on the above tasks or in other cases. Is ChatGPT useful for all that?
+
+### Work Done:
+
+Just like with the first lab, I've used GPT with the *"Search"* and *"Reason"* option, and using as a baseline the
+classes, both the tests and the entities created originally with the lab, so that is the normal StandardDevice and the
+RandomFailing policy, where I supplied the code of each and one of them.
+
+* Write: The prompt I've given to write tests from zero, it's this:
+```
+Could you pretty pretty please help me write JUnit tests for a java application, both Unit and Integration test? 
+Consider to use the Mockito library for costructs like Test Doubles through Mocks (So using data structures like 
+Spy and Mock) and Stubs (So using data structures like Dummy, Stub and Fake). The application is just a basic idea of a 
+Device and a Failing Policy, and I want to test both considering the mostly basic scenarios. The code is as follows: 
+Device Interface:
+"
+...
+",
+FailingPolicy Interface:
+"
+...
+",
+An implemented FailingPolicy called RandomFailing:
+"
+...
+",
+And finally an implemented Device called StandardDevice:
+"
+...
+" 
+```
+Once again, the prompts look very silly, but they're useful (again in my experience) for better results. The results are
+two Java class files produced by GPT, inside the package *GPTtests.written* inside the test folder.
+
+Firstly, GPT produced a class that contains Unit Tests in the class 
+[StandardDeviceUnitTestGPT](src/test/java/GPTtests/written/StandardDeviceUnitTestGPT.java), where it actually lacked
+the annotation to initialize the mock variables declared (The line of code that was lacking was in the setup method).
+The mocking present is done correctly, and the test is not too bad, unfortunately I couldn't manage to produce a result
+where the spy construct was used, and if it was used, it was used correctly; but otherwise the results can be used
+somewhat.
+
+Meanwhile for the Integration tests, GPT produced the 
+[StandardDeviceIntegrationTestGPT](src/test/java/GPTtests/written/StandardDeviceIntegrationTestGPT.java) class, which
+includes again good integration tests for the devices at hand, covering most cases, tested through the coverage tool.
+
+* Improve/Complete: For this task I've used the already present 
+[AlternateStandardDeviceTest](src/test/java/devices/AlternateStandardDeviceTest.java) class to feed GPT, with the prompt
+being:
+```
+Could you pretty pretty please help me improve JUnit tests for a java application, both Unit and Integration test? Consider to use the Mockito library for costructs like Test Doubles through Mocks (So using data structures like Spy and Mock) and Stubs (So using data structures like Dummy, Stub and Fake). The application is just a basic idea of a Device and a Failing Policy, and I want to test both considering the mostly basic scenarios. The code is as follows:
+Device Interface:
+"
+...
+",
+An implemented FailingPolicy called RandomFailing:
+"
+...
+",
+And finally an implemented Device called StandardDevice:
+"
+...
+".
+Meanwhile, here are some of the tests I've written:
+"
+...
+"
+```
+The class produced, [StandardDeviceUnitTestGPT.java](src/test/java/GPTtests/improveComplete/StandardDeviceUnitTestGPT.java),
+is actually a pretty consistent and extended test class well produced, both in the code and the displayNames to explain
+the test. Curiously, in counterpart to the writing task earlier, because spies were mentioned in the code, it was easier
+for GPT to actually use it, which makes me wonder if GPT actually lacks the knowledge base for Mockito constructs.
+
+* Reverse-engineer: When it comes to reverse-engineering the original entities (Device and FailigPolicy), I actually used
+both of the available original devices test, so I gave GPT the 
+[AlternateStandardDeviceTest.java](src/test/java/devices/AlternateStandardDeviceTest.java) and
+[StandardDeviceTest.java](src/test/java/devices/StandardDeviceTest.java) classes. The prompt given is as follows:
+```
+Could you pretty pretty please help me reverse-engineer Java classes from JUnit tests for a java application? Consider that I used the Mockito library for costructs like Test Doubles through Mocks (So using data structures like Spy and Mock) and Stubs (So using data structures like Dummy, Stub and Fake). The application is just a basic idea of a Device and a Failing Policy, and I want to test both considering the mostly basic scenarios. The code for the tests is as follows:
+This is one:
+"
+...
+",
+And this is another:
+"
+...
+"
+```
+With the results present inside the *GPTtests* package inside the java source folder, once again, like the first lab, the
+results are surprisingly accurate, apart from the reset function of the FailingPolicy, but otherwise the classes are
+very, very good, proving that reverse-engineering can be done effectively.
+
+So all in all GPT can be used to produce JUnit tests very easily as a sort of boilerplate producer, making writing
+certain tests faster, but it definitely, at least as of writing this README, lacks certain information and knowledge if 
+one wants to use specific technologies.
